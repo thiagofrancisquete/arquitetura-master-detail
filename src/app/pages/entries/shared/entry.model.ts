@@ -5,10 +5,10 @@ export class Entry {
     public id?: number,
     public name?: string,
     public description?: string,
+    public amount?: string,
+    public date?: string,
     public type?: string,
     public paid?: boolean,
-    public date?: string,
-    public amount?: string,
     public categoryId?: number,
     public catergory?: Category
   ) {}
@@ -18,7 +18,7 @@ export class Entry {
     revenue: 'Receita',
   };
 
-  getPaidText(): string {
+  get paidText(): string {
     return this.paid ? 'Pago' : 'Pendente';
   }
 }
