@@ -1,4 +1,3 @@
-import { Category } from './../../categories/shared/category.model';
 import { CategoryService } from './../../categories/shared/category.service';
 import { Component, OnInit, AfterContentChecked } from '@angular/core';
 import {
