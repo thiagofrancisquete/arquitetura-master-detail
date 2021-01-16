@@ -19,12 +19,12 @@ export class EntryService {
       .pipe(catchError(this.handleError), map(this.jsonDataToEntries));
   }
 
-  getById(id: number): Observable<Entry[]> {
+  getById(id: number): Observable<Entry> {
     const url = `${this.apiPath}/${id}`;
 
     return this.http
       .get(url)
-      .pipe(catchError(this.handleError), map(this.jsonDataToEntries));
+      .pipe(catchError(this.handleError), map(this.jsonDataToEntry));
   }
 
   create(entry: Entry): Observable<Entry> {
@@ -59,9 +59,10 @@ export class EntryService {
   }
 
   private jsonDataToEntry(jsonData: any): Entry {
-    return  Object.assign(new Entry(), jsonData);
+    // return  Object.assign(new Entry(), jsonData);
+    return jsonData as Entry;
   }
-  
+
   private jsonDataToEntries(jsonData: any[]): Entry[] {
     const entries: Entry[] = [];
 
@@ -71,5 +72,10 @@ export class EntryService {
     });
 
     return entries;
+
+    // const entries: Entry[] = [];
+    // jsonData.forEach(element => entries.push(element as Entry))
+
+    // return entries;
   }
 }

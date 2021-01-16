@@ -1,3 +1,5 @@
+import { Category } from './../../categories/shared/category.model';
+import { CategoryService } from './../../categories/shared/category.service';
 import { Component, OnInit, AfterContentChecked } from '@angular/core';
 import {
   FormBuilder,
@@ -6,6 +8,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+
+import { Category } from '../../categories/shared/category.model';
 import { Entry } from '../shared/entry.model';
 import { EntryService } from '../shared/entry.service';
 
@@ -24,18 +28,30 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
   serverErrorMessages: string[] = null;
   submittingForm: boolean = false;
   entry: Entry = new Entry();
+  categories: Array<Category>;
+
+  imaskConfig = {
+    mask: Number,
+    scale: 2,
+    thousandsSeparator: '',
+    padFractionalZeros: true,
+    normalizeZeros: true,
+    radix: ',',
+  };
 
   constructor(
     private entryService: EntryService,
     private route: ActivatedRoute,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private categorieService: CategoryService
   ) {}
 
   ngOnInit(): void {
     this.setCurrentAction();
     this.buildEntryForm();
     this.loadEntry();
+    this.loadCategory();
   }
 
   ngAfterContentChecked() {
@@ -50,6 +66,15 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
     } else {
       this.updateEntry();
     }
+  }
+
+  get typeOptions(): Array<any> {
+    return Object.entries(Entry.types).map(([value, text]) => {
+      return {
+        text,
+        value,
+      };
+    });
   }
 
   // PRIVATE METHODS
@@ -113,10 +138,17 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
           (entry) => {
             this.entry = entry;
             this.entryForm.patchValue(entry); // binds loaded entry to EntryForm
+            console.log(this.entry);
           },
-          (error) => alert('Ocorreu um erro no servidor, tente mais tarde')
+          (error) => console.log('ocorreu um erro no loadEntry')
         );
     }
+  }
+
+  private loadCategory() {
+    this.categorieService
+      .getAll()
+      .subscribe((categories) => (this.categories = categories));
   }
 
   private buildEntryForm() {
@@ -124,6 +156,11 @@ export class EntryFormComponent implements OnInit, AfterContentChecked {
       id: [null],
       name: [null, [Validators.required, Validators.minLength(2)]],
       description: [null],
+      type: ["expense", [Validators.required]],
+      amount: [null, [Validators.required]],
+      date: [null, [Validators.required]],
+      paid: [true, [Validators.required]],
+      categoryId: [null, [Validators.required]],
     });
   }
 

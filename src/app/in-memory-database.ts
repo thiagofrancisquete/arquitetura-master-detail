@@ -38,7 +38,7 @@ export class InMemoryDatabase implements InMemoryDbService {
       new Entry(
         2,
         'Cinema',
-        'Cinema com a morena',
+        'Cinema com a familia',
         '135,90',
         '11/01/2021',
         'expense',
@@ -49,7 +49,7 @@ export class InMemoryDatabase implements InMemoryDbService {
       new Entry(
         3,
         'Salário',
-        'Cinema com a morena',
+        'Recebimento do salário',
         '25.000,00',
         '11/01/2021',
         'revenue',
@@ -64,7 +64,7 @@ export class InMemoryDatabase implements InMemoryDbService {
         '470,59',
         '15/01/2021',
         'expense',
-        true,
+        false,
         categories[0].id,
         categories[0]
       ),
